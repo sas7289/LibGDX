@@ -14,7 +14,6 @@ public class GameScreen extends BaseScreen {
     private Vector2 rowV;
     private Vector2 rowA;
     private Vector2 ox;
-    private Vector2 moveDirection;
     private int ROW_SPEED = 10;
     private boolean shoot = false;
 
@@ -55,15 +54,23 @@ public class GameScreen extends BaseScreen {
     }
 
 
+
     private void checkAndMoveRow() {
-        if (shoot && rowPos.y >= 0) {
+        if(shoot && ((rowTargetPos.x - rowPos.x) * rowV.x > 0)) {
             rowV.scl(ROW_SPEED);
             rowPos.add(rowV);
-            rowV.add(rowA);
-        } else return;
-        if(rowPos.y < 0) {
-            rowPos.y = 0;
+        } else {
             shoot = false;
         }
+
+//        if (shoot && rowPos.y >= 0) {
+//            rowV.scl(ROW_SPEED);
+//            rowPos.add(rowV);
+//            rowV.add(rowA);
+//        } else return;
+//        if(rowPos.y < 0) {
+//            rowPos.y = 0;
+//            shoot = false;
+//        }
     }
 }
