@@ -9,12 +9,11 @@ import com.my.game.base.BaseScreen;
 public class GameScreen extends BaseScreen {
     private Texture background;
     private Texture row;
-    private Vector2 rowPos;
-    private Vector2 rowTargetPos;
-    private Vector2 rowV;
-    private Vector2 rowA;
-    private Vector2 ox;
-    private int ROW_SPEED = 10;
+    private Vector2 rowPos; //позиция стрелы
+    private Vector2 rowTargetPos; //цель полёта стрелы
+    private Vector2 rowV; //вектор скорости стрелы
+    private Vector2 ox; //ось Х
+    private int ROW_SPEED = 20; //скалярная величина скорости
     private boolean shoot = false;
 
     @Override
@@ -24,7 +23,6 @@ public class GameScreen extends BaseScreen {
         row = new Texture("row.png");
         rowPos = new Vector2();
         rowTargetPos = new Vector2();
-        rowA = new Vector2(0f, -1f);
         rowV = new Vector2();
         ox = new Vector2(1, 0);
         ox.nor();
@@ -47,9 +45,8 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         shoot = true;
-        System.out.println("touchDown");
         rowTargetPos.set(screenX, Gdx.graphics.getHeight() - screenY);
-        rowV.set(rowTargetPos.sub(rowPos)).nor();
+        rowV.set(rowTargetPos.cpy().sub(rowPos)).nor();
         return false;
     }
 
@@ -62,15 +59,5 @@ public class GameScreen extends BaseScreen {
         } else {
             shoot = false;
         }
-
-//        if (shoot && rowPos.y >= 0) {
-//            rowV.scl(ROW_SPEED);
-//            rowPos.add(rowV);
-//            rowV.add(rowA);
-//        } else return;
-//        if(rowPos.y < 0) {
-//            rowPos.y = 0;
-//            shoot = false;
-//        }
     }
 }
