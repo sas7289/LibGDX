@@ -13,26 +13,35 @@ public class GameScreen extends BaseScreen {
     private Vector2 rowTargetPos;
     private Vector2 rowV;
     private Vector2 rowA;
-    private int ROW_SPEED = 20;
+    private Vector2 ox;
+    private Vector2 moveDirection;
+    private int ROW_SPEED = 10;
     private boolean shoot = false;
 
     @Override
     public void show() {
         super.show();
         background = new Texture("forest.jpg");
-        row = new Texture("row.jpg");
+        row = new Texture("row.png");
         rowPos = new Vector2();
+        rowTargetPos = new Vector2();
         rowA = new Vector2(0f, -1f);
         rowV = new Vector2();
-        rowTargetPos = new Vector2();
+        ox = new Vector2(1, 0);
+        ox.nor();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         checkAndMoveRow();
+        rowV.nor();
         batch.begin();
-        batch.draw(row, rowPos.x, rowPos.y);
+        batch.draw(background, 0, 0);
+        double angle =(Math.acos(rowV.dot(ox)) * 180 / 3.14);
+        batch.draw(row, rowPos.x, rowPos.y, row.getWidth()/2f, row.getHeight()/2f,
+                150f, 50f, 1f, 1f, (float) angle, 0,0,
+                256, 91, false, false);
         batch.end();
     }
 
@@ -42,13 +51,13 @@ public class GameScreen extends BaseScreen {
         System.out.println("touchDown");
         rowTargetPos.set(screenX, Gdx.graphics.getHeight() - screenY);
         rowV.set(rowTargetPos.sub(rowPos)).nor();
-        rowV.scl(ROW_SPEED);
         return false;
     }
 
 
     private void checkAndMoveRow() {
         if (shoot && rowPos.y >= 0) {
+            rowV.scl(ROW_SPEED);
             rowPos.add(rowV);
             rowV.add(rowA);
         } else return;
