@@ -6,12 +6,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.my.game.base.BaseScreen;
 import com.my.game.base.Sprite;
+import com.my.game.math.Rect;
 import com.my.game.sprite.Background;
 import com.my.game.sprite.Row;
 
 public class GameScreen extends BaseScreen {
     private Background background;
     private Row row;
+
+    private Texture bgTexture;
+    private Texture rowTexture;
 
 //    private Texture background;
 //    private Texture row;
@@ -25,9 +29,10 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-
-        background = new Background(new Texture("forest.jpg"));
-        row = new Row(new Texture("row.png"));
+        bgTexture = new Texture("forest.jpg");
+        rowTexture = new Texture("row.png");
+        background = new Background(bgTexture);
+        row = new Row(rowTexture);
 
 //        rowPos = new Vector2();
 //        rowTargetPos = new Vector2();
@@ -44,6 +49,12 @@ public class GameScreen extends BaseScreen {
         draw();
     }
 
+    @Override
+    public void resize(Rect worldBounds) {
+        super.resize(worldBounds);
+        background.resize(worldBounds);
+    }
+
     private void draw() {
         batch.begin();
         background.draw(batch);
@@ -55,7 +66,21 @@ public class GameScreen extends BaseScreen {
         batch.end();
     }
 
-//    @Override
+    @Override
+    public void dispose() {
+        super.dispose();
+        bgTexture.dispose();
+        rowTexture.dispose();
+    }
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+        row.touchDown(touch, pointer, button);
+        return false;
+    }
+
+
+    //    @Override
 //    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 //        shoot = true;
 //        rowTargetPos.set(screenX, Gdx.graphics.getHeight() - screenY);

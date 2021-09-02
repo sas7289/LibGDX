@@ -9,19 +9,19 @@ import com.my.game.base.Sprite;
 import com.my.game.math.Rect;
 
 public class Row extends Sprite {
-    private int HEIGHT_IMG = 10;
+    private int HEIGHT_IMG = 20;
 
     private Vector2 rowPos; //позиция стрелы
     private Vector2 rowTargetPos; //цель полёта стрелы
     private Vector2 rowV; //вектор скорости стрелы
     private Vector2 ox; //ось Х
-    private int ROW_SPEED = 20; //скалярная величина скорости
+    private float ROW_SPEED = 0.05f; //скалярная величина скорости
     private boolean shoot = false;
 
 
     public Row(Texture texture) {
         super(new TextureRegion(texture));
-        rowPos = new Vector2();
+        pos.set(-0.5f, -0.5f);
         rowTargetPos = new Vector2();
         rowV = new Vector2();
         ox = new Vector2(1, 0);
@@ -39,15 +39,19 @@ public class Row extends Sprite {
         checkAndMoveRow();
         rowV.nor();
         double angle =(Math.acos(rowV.dot(ox)) * 180 / 3.14);
-        batch.draw(regions[0].getTexture(), rowPos.x, rowPos.y, regions[0].getRegionWidth()/2f, regions[0].getRegionHeight()/2f,
-                150f, 50f, 1f, 1f, (float) angle, 0,0,
-                256, 91, false, false);
+//        batch.draw(regions[0], 0,0, 0.2f, 0.2f);
+        batch.draw(regions[0],
+                getLeft(), getBottom(),
+                halfWidth, halfHeight,
+                0.5f, 0.2f,
+                1f, 1f,
+                (float) angle);
     }
 
     private void checkAndMoveRow() {
-        if(shoot && ((rowTargetPos.x - rowPos.x) * rowV.x > 0)) {
+        if(shoot && ((rowTargetPos.x - pos.x) * rowV.x > 0)) {
             rowV.scl(ROW_SPEED);
-            rowPos.add(rowV);
+            pos.add(rowV);
         } else {
             shoot = false;
         }
@@ -57,7 +61,7 @@ public class Row extends Sprite {
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         shoot = true;
         rowTargetPos.set(touch);
-        rowV.set(rowTargetPos.cpy().sub(rowPos)).nor();
+        rowV.set(rowTargetPos.cpy().sub(pos)).nor();
         return false;
     }
 
