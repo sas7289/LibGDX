@@ -17,13 +17,6 @@ public class GameScreen extends BaseScreen {
     private Texture bgTexture;
     private Texture rowTexture;
 
-//    private Texture background;
-//    private Texture row;
-//    private Vector2 rowPos; //позиция стрелы
-//    private Vector2 rowTargetPos; //цель полёта стрелы
-//    private Vector2 rowV; //вектор скорости стрелы
-//    private Vector2 ox; //ось Х
-//    private int ROW_SPEED = 20; //скалярная величина скорости
     private boolean shoot = false;
 
     @Override
@@ -33,19 +26,11 @@ public class GameScreen extends BaseScreen {
         rowTexture = new Texture("row.png");
         background = new Background(bgTexture);
         row = new Row(rowTexture);
-
-//        rowPos = new Vector2();
-//        rowTargetPos = new Vector2();
-//        rowV = new Vector2();
-//        ox = new Vector2(1, 0);
-//        ox.nor();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
-//        checkAndMoveRow();
-//        rowV.nor();
         draw();
     }
 
@@ -59,10 +44,6 @@ public class GameScreen extends BaseScreen {
         batch.begin();
         background.draw(batch);
         row.draw(batch);
-//        double angle =(Math.acos(rowV.dot(ox)) * 180 / 3.14);
-//        batch.draw(row, rowPos.x, rowPos.y, row.getWidth()/2f, row.getHeight()/2f,
-//                150f, 50f, 1f, 1f, (float) angle, 0,0,
-//                256, 91, false, false);
         batch.end();
     }
 
@@ -79,23 +60,4 @@ public class GameScreen extends BaseScreen {
         return false;
     }
 
-
-    //    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        shoot = true;
-//        rowTargetPos.set(screenX, Gdx.graphics.getHeight() - screenY);
-//        rowV.set(rowTargetPos.cpy().sub(rowPos)).nor();
-//        return false;
-//    }
-
-
-
-//    private void checkAndMoveRow() {
-//        if(shoot && ((rowTargetPos.x - rowPos.x) * rowV.x > 0)) {
-//            rowV.scl(ROW_SPEED);
-//            rowPos.add(rowV);
-//        } else {
-//            shoot = false;
-//        }
-//    }
 }

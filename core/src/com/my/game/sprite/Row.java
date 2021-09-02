@@ -38,12 +38,12 @@ public class Row extends Sprite {
     public void draw(SpriteBatch batch) {
         checkAndMoveRow();
         rowV.nor();
-        double angle =(Math.acos(rowV.dot(ox)) * 180 / 3.14);
-//        batch.draw(regions[0], 0,0, 0.2f, 0.2f);
+        int sign = rowV.x >= 0 ? 1 : -1;
+        angle = (float)(Math.acos(rowV.dot(ox)) * 180 / 3.14) * sign;
         batch.draw(regions[0],
                 getLeft(), getBottom(),
                 halfWidth, halfHeight,
-                0.5f, 0.2f,
+                0.2f, 0.1f,
                 1f, 1f,
                 (float) angle);
     }
